@@ -15,8 +15,23 @@ app.use((req, res, next) => {
     console.log("EXPRESS:", req.method, req.originalUrl);
     next();
 });
+app.get("/test", (req, res) => {
+    res.json({
+        id: "community.test",
+        version: "1.0.0",
+        name: "Test",
+        description: "Test addon",
+        resources: [],
+        types: [],
+        catalogs: []
+    });
+});
 
-app.use(getRouter(addonInterface));
+const manifest = require("./manifest");
+
+app.get("/manifest.json", (req, res) => {
+    res.json(manifest);
+});
 
 app.get("/subtitle/:url", async (req, res) => {
     try {
