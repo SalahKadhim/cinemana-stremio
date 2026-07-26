@@ -1,6 +1,6 @@
 const manifest = {
-    id: "community.cinemana",
-    version: "1.2.0",
+    id: "community.cinemana.render",
+version: "1.2.1",
 
     name: "Cinemana",
 
