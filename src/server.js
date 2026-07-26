@@ -20,7 +20,12 @@ app.get("/manifest.json", (req, res) => {
 });
 
 // All other SDK routes
-app.use(getRouter(addonInterface));
+const manifest = require("./manifest");
+
+app.get("/manifest.json", (req, res) => {
+    console.log("Manual manifest served");
+    res.json(manifest);
+});
 
 app.get("/subtitle/:url", async (req, res) => {
     try {
