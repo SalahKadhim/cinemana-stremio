@@ -19,8 +19,6 @@ app.get("/manifest.json", (req, res) => {
     res.json(manifest);
 });
 
-// All other SDK routes
-const manifest = require("./manifest");
 
 app.get("/manifest.json", (req, res) => {
     console.log("Manual manifest served");
