@@ -1,8 +1,9 @@
 const manifest = {
-    id: "community.cinemana.render",
-version: "1.2.1",
+    id: "community.cinemana.local",
 
-    name: "Cinemana",
+    version: "1.2.2",
+
+    name: "Cinemana Local",
 
     description: "Watch movies and TV shows from Cinemana.",
 
