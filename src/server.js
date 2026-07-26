@@ -3,7 +3,6 @@ const axios = require("axios");
 const { getRouter } = require("stremio-addon-sdk");
 
 const addonInterface = require("./addon");
-const manifest = require("./manifest");
 
 const app = express();
 
@@ -12,18 +11,7 @@ app.use((req, res, next) => {
     next();
 });
 
-// Serve the manifest manually
-app.get("/manifest.json", (req, res) => {
-    console.log("Serving manual manifest");
-    res.setHeader("Content-Type", "application/json; charset=utf-8");
-    res.json(manifest);
-});
-
-
-app.get("/manifest.json", (req, res) => {
-    console.log("Manual manifest served");
-    res.json(manifest);
-});
+app.use(getRouter(addonInterface));
 
 app.get("/subtitle/:url", async (req, res) => {
     try {
@@ -54,5 +42,5 @@ app.get("/subtitle/:url", async (req, res) => {
 const PORT = process.env.PORT || 7000;
 
 app.listen(PORT, "0.0.0.0", () => {
-    console.log(`Listening on ${PORT}`);
+    console.log(`Cinemana addon running on port ${PORT}`);
 });
