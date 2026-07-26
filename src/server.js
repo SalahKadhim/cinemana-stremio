@@ -3,35 +3,24 @@ const axios = require("axios");
 const { getRouter } = require("stremio-addon-sdk");
 
 const addonInterface = require("./addon");
+const manifest = require("./manifest");
 
 const app = express();
 
-// Log EVERY incoming request
 app.use((req, res, next) => {
     console.log(`[HTTP] ${req.method} ${req.originalUrl}`);
     next();
 });
-app.use((req, res, next) => {
-    console.log("EXPRESS:", req.method, req.originalUrl);
-    next();
-});
-app.get("/test", (req, res) => {
-    res.json({
-        id: "community.test",
-        version: "1.0.0",
-        name: "Test",
-        description: "Test addon",
-        resources: [],
-        types: [],
-        catalogs: []
-    });
-});
 
-const manifest = require("./manifest");
-
+// Serve the manifest manually
 app.get("/manifest.json", (req, res) => {
+    console.log("Serving manual manifest");
+    res.setHeader("Content-Type", "application/json; charset=utf-8");
     res.json(manifest);
 });
+
+// All other SDK routes
+app.use(getRouter(addonInterface));
 
 app.get("/subtitle/:url", async (req, res) => {
     try {
@@ -43,7 +32,6 @@ app.get("/subtitle/:url", async (req, res) => {
 
         let data = Buffer.from(response.data);
 
-        // Add UTF-8 BOM if missing
         if (
             data.length >= 3 &&
             !(data[0] === 0xef && data[1] === 0xbb && data[2] === 0xbf)
@@ -62,6 +50,6 @@ app.get("/subtitle/:url", async (req, res) => {
 
 const PORT = process.env.PORT || 7000;
 
-app.listen(PORT, () => {
-    console.log(`Cinemana addon running on http://localhost:${PORT}/manifest.json`);
+app.listen(PORT, "0.0.0.0", () => {
+    console.log(`Listening on ${PORT}`);
 });
